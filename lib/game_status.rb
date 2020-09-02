@@ -76,6 +76,6 @@ def winner(board)
 end
 
 puts winner(board)
-#   end
-# end
+   end
+ 
 # end
