@@ -4,68 +4,44 @@ def position_taken?(board, index)
   !(board[index].nil? || board[index] == " ")
 end
 
-# Define your WIN_COMBINATIONS constant
 WIN_COMBINATIONS = [
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
+  [0,1,2], #Top row
+  [3,4,5], #Middle row
+  [6,7,8], #Bottom row
+  [0,3,6], #Left column
+  [1,4,7], #Middle column
+  [2,5,8], #Right column
+  [0,4,8], #Left start diagonal
+  [2,4,6]  #Right start diagonal
+]
 
-  [0,4,8],
-  [2,4,6],
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
+board = ["X", "X", "X", "O", " ", "O", "O", " ", " "]
+camel = [8, " ", " ", " ", 8, " ", " ", " ", 8]
 
-  ]
-
-
-# def empty_board(board)
-#  empty_board = board.all {|x| x == " "}
-#
-# end
 
 def won?(board)
-  # empty_board = board.all {|x| x == " "}
-WIN_COMBINATIONS.detect do |combo|
-    board[combo[0]] == board[combo[1]] &&
-    board[combo[1]] == board[combo[2]] &&
-    position_taken?(board, combo[0])
-  end 
+winner = []
+empty_board = board.all? {|x| x == " "}
+WIN_COMBINATIONS.each do |sub_array|
+    if empty_board || full?(board)
+      return false
+    elsif sub_array.all? { |value| board[value] =="X" } || sub_array.all? { |value| board[value] =="O" }
+      winner = sub_array
+    end
+  end
+  winner
 end
-#   winner = []
-#   WIN_COMBINATIONS.each do |win_array|
-# if win_array.detect { |the_winner| board[the_winner] == "X" } || win_array.detect { |the_winner| board[the_winner] == "O" }
-#
-#   return win_array end
-
 
 def full?(board)
-#  !board.any? { |x| x == " " }
-  board.all?{|token| token == "X" || token == "O"}
+  !board.any? { |x| x == " " }
 end
 
 def draw?(board)
-  full?(board) && !won?(board)
-  # if !won?(board) && full?(board)
-  #   return true
-  #    elsif !won?(board) && !full?(board) || !won?(board)
-  #   return false
+  if !won?(board) && full?(board)
+    return true
+  elsif !won?(board) && !full?(board) || !won?(board)
+    return false
+  end
 end
 
-def over?(board)
-  won?(board) || full?(board) 
-end
-
-def winner(board)
- if number1 = won?(board)
-  return board[number1.first]
- end
-end
-end
-# if WIN_COMBINATIONS = board.any? { |x| board == "X"}
-#   return "X"
-# if WIN_COMBINATIONS = board.any? { |x| board == "O"}
-#   return "O"
-#   end
-# end
-# end
+draw?(board)
